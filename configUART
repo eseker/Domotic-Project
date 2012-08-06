@@ -1,0 +1,3 @@
+#!/bin/sh
+echo 0x00 > /sys/kernel/debug/omap_mux/uart1_txd
+echo 0x20 > /sys/kernel/debug/omap_mux/uart1_rxd

@@ -1,0 +1,46 @@
+info it worked if it ends with ok
+verbose cli [ 'node', '/usr/bin/npm', 'install', 'http' ]
+info using npm@1.1.22
+info using node@v0.6.14
+verbose config file /home/root/.npmrc
+verbose config file /usr/etc/npmrc
+verbose config file /usr/lib/node_modules/npm/npmrc
+verbose caching /home/root/node_modules/mysql/package.json
+verbose caching /home/root/node_modules/mongodb/package.json
+verbose caching /home/root/node_modules/jade/package.json
+verbose caching /home/root/node_modules/duino/package.json
+verbose caching /home/root/node_modules/mongoose/package.json
+verbose caching /home/root/node_modules/express/package.json
+verbose caching /home/root/node_modules/node/package.json
+verbose caching /home/root/node_modules/serialport/package.json
+verbose cache add [ 'http', null ]
+silly cache add: name, spec, args [ undefined, 'http', [ 'http', null ] ]
+verbose parsed url { pathname: 'http', path: 'http', href: 'http' }
+verbose addNamed [ 'http', '' ]
+verbose addNamed [ null, '' ]
+silly name, range, hasData [ 'http', '', false ]
+verbose raw, before any munging http
+verbose url resolving [ 'https://registry.npmjs.org/', './http' ]
+verbose url resolved https://registry.npmjs.org/http
+http GET https://registry.npmjs.org/http
+http 404 https://registry.npmjs.org/http
+silly get cb [ 404,
+silly get cb   { server: 'CouchDB/1.2.0 (Erlang OTP/R15B)',
+silly get cb     date: 'Wed, 18 Jul 2012 22:55:44 GMT',
+silly get cb     'content-type': 'application/json',
+silly get cb     'content-length': '52',
+silly get cb     'cache-control': 'must-revalidate' } ]
+ERR! 404 'http' is not in the npm registry.
+ERR! 404 You should bug the author to publish it
+ERR! 404 Note that you can also install from a
+ERR! 404 tarball, folder, or http url, or git url.
+ERR! 
+ERR! System Linux 3.2.16
+ERR! command "node" "/usr/bin/npm" "install" "http"
+ERR! cwd /home/root
+ERR! node -v v0.6.14
+ERR! npm -v 1.1.22
+ERR! code E404
+ERR! message 404 Not Found: http
+ERR! errno {}
+verbose exit [ 1, true ]

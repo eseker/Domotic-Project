@@ -1,0 +1,67 @@
+
+
+#container
+#logo
+    img(src='/images/logo-domo.png')
+#display
+h1  Interface Domotique 
+h3  by the Fabric®
+
+#display
+        #login        
+      
+ 
+ #parametres        
+        form(method='post')
+          h6  | Selectionnez une pièce et ses valeurs RGB compris entre 0 et 255:
+            div
+               
+                p
+#container
+      select(name="user[chambre]")
+        option(value="") -- choisir une chambre --
+        option(value="1") salon
+        option(value="2") salle à manger
+        option(value="3") couloir
+        option(value="4") entrée
+        option(value="5") chambre1
+        option(value="6") chambre2
+              
+        input(type='text',value="Rouge", name="Red")
+              
+
+        input(type='text',value="Vert", name='Green')
+            
+        input(type='text',value="Bleu", name='Blue')
+        
+        input(type='submit', value='on/off')
+
+
+
+
+fieldset
+    legend validation
+   p
+    
+        
+        
+    
+    
+  p.buttons
+    input(type="submit", value="Save")
+
+
+
+p
+p
+
+
+
+
+
+#footer
+    div Copyright &copy; application Eseker #{+new Date().getFullYear()} 
+    a(href='/page?name=about') About 
+    | |  
+    a(href='/page?name=contact') Contact Us
+

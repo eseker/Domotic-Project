@@ -1,0 +1,7 @@
+script(type='text/javascript', src='/javascripts/jquery.js')
+script(type='text/javascript', src='/javascripts/chatroom.js')
+ul#msgList(style='list-style-type : none;')
+ 
+form#sendForm(method='post', action='/send')
+    input#msgBox(type='text', name='message')
+    input#submitButton(type='submit', value='Send')

@@ -1,0 +1,55 @@
+<html>
+<head>
+<title>DynAPI Examples - HTML RadioButton</title>
+<script language="JavaScript" src="./dynapisrc/dynapi.js"></script>
+<script language="Javascript">
+dynapi.library.setPath('./dynapisrc/');
+dynapi.library.include('dynapi.api');
+dynapi.library.include('TemplateManager');
+dynapi.library.include('HTMLRadioButton');
+</script>
+<script language="Javascript">
+
+var tp = new Template(
+    'This is the Template (choose Car Color)<br>\n' +
+    '<center>\n' +
+    '  <form>\n' +
+    '    <table border="1" width="180">\n' +
+    '      <tr>\n' +
+    '        <td align="center">\n' +
+    '          Select an option below<br>\n' +
+    '          {@optblue}Blue {@optred}Red\n' +
+    '        </td>\n' +
+    '      </tr>\n' +
+    '    </table>\n' +
+    '  </form>\n' +
+    '</center>\n',
+    100,100,250,200,'#EEEEEE'
+);
+tp.addChild(new HTMLRadioButton(null,'color','Blue Car',true),'optblue');
+tp.addChild(new HTMLRadioButton(null,'color','Red Car'),'optred');
+
+tp.optblue.addEventListener({
+  onclick:function(e){
+    var o=e.getSource();
+    alert('This is a Radio Button with a value of "'+o.getValue()+'".');
+  }
+});
+
+tp.optred.addEventListener({
+  onclick:function(e){
+    var o=e.getSource();
+    alert('This is a Radio Button with a value of "'+o.getValue()+'".');
+  }
+});
+
+dynapi.document.addChild(tp);
+
+</script>
+</head>
+<body>
+<script>
+  dynapi.document.insertAllChildren();
+</script>
+</body>
+</html>

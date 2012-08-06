@@ -1,0 +1,67 @@
+extends layout
+
+block content
+  h1= title
+
+  script(src='javascripts/client.js')
+  p  The fabric&reg; #{title}
+  
+
+  p
+  | Room
+  select#roomid
+      option(value='') -- choisir une chambre --
+      <optgroup label="Salon">
+      option(value='4') lampe central
+      option(value='9') capteur IR
+      
+       <optgroup label="salle &agrave; manger">
+      option(value='21') lampe central
+      option(value='22') capteur IR
+      option(value='23') entr&eacute;
+    
+       <optgroup label="chambres">
+      option(value='31') lampe central
+      option(value='32') capteur IR
+    
+  p
+  |  Red
+  input#r(type='range', value='0', min='0', max='255', data-highlight="true")
+  p
+  | Green 
+  input#g(type='range', value='0', min='0', max='255', data-highlight="true")
+  p
+  |  Blue
+  input#b(type='range', value='0', min='0', max='255', data-highlight="true")
+  P
+ 
+  
+  input#red(name='submit', type='button',data-inline="true" , value='red',style='background-color:red') 
+  input(name='submit', type='button',data-inline="true" , value='blue',style='background-color:blue' )
+  input(name='submit', type='button',data-inline="true" , value='green',style='background-color:green' )
+  input(name='submit', type='button',data-inline="true" , value='yellow',style='background-color:yellow' )
+ 
+  br
+
+  
+
+  <label for="flip-1">Interrupteur:</label>
+  <select name="#flip-1" id="#flip-1" data-role="slider">
+  <option value="off">Off</option>
+  <option value="on">On</option>
+  </select>
+  P
+  
+
+  br
+  input#btnSendRequest(type='submit', value='Send Request')
+  br
+  #requestResult(style='background-color: red;color:white;font-weight:bold;')
+  br
+  
+  #footer
+  #logo
+    img(src='/images/LOGO-UNIGE.jpg')
+    div Copyright &copy; application Eseker #{+new Date().getFullYear()} 
+    a(href='/aboutus') About 
+  
