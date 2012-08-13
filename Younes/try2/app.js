@@ -4,7 +4,6 @@
  */
 
 var express = require('express')
-  , routes = require('./routes')
   , http = require('http');
 var events = require('events');
 var util = require('util'); 
@@ -29,22 +28,42 @@ app.configure('development', function(){
   app.use(express.errorHandler());
 });
 
-app.get('/', routes.index);
-app.get('/aboutus', routes.aboutus);
-app.get('/room/:id/:r/:g/:b', routes.room);
+app.get('/', function(req, res){
+  res.render('index', { title: 'App Domotique' });
+});
+
+app.get('/aboutus', function(req, res){
+  res.render('aboutus', { title: 'About us' });
+});
+
+
+app.post('/send', function(req, res){
+  var devise = req.body;
+  /*
+      send request via serial port here
+      //devise.id, devise.color, devise.sensor, etc ...
+    
+      var message =[];
+      message[0]= devise.id.toString(16);
+      message[1]= devise.color.toString(16);
+      serialPort.write(message);
+  */
+  res.send("ok");
+  
+});
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
 });
 
-var SerialPort = require("serialport").SerialPort;
-var serialPort = new SerialPort("/dev/ttyO1", {baudrate : 57600});
+//var SerialPort = require("serialport").SerialPort;
+//var serialPort = new SerialPort("/dev/ttyO1", {baudrate : 57600});
 
 //data.pir();
 
-serialPort.on("data", function (data) {
-    console.log("valeur: "+data);
-});
+//serialPort.on("data", function (data) {
+//    console.log("valeur: "+data);
+//});
 
 //var fxpir =function(data){
   //return data;
