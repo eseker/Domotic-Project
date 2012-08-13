@@ -1,0 +1,74 @@
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+
+.timeRangeInfo{
+    position: relative;
+    height: 30px;
+    margin-top: 60px;
+}
+.timeRangeInfo label{
+    position: absolute;
+    top: -30px;
+    left: 10px;
+}                            /* moves label field */
+.timeRangeInfo #time_slider_min{
+    top: -40px;
+    position: absolute;
+    left: 100px;
+    display: none;
+}       /* moves first input field */ 
+.timeRangeInfo #time_slider_max{
+    top: -40px;
+    position: absolute;
+    left: 170px;
+    display: none;
+}      /* move second input field */ 
+.timeRangeInfo div.ui-slider{
+    position: absolute;
+}                   /* move both sliders - adressing 1st slider with CSS is hard */ 
+.timeRangeInfo div:last-child{
+    position: absolute;
+    left: 0px;
+}
+
+
+div.ui-slider {
+  width: 95%;
+}
+
+#room_setting {
+  display: none;
+}
+
+#sensor_setting {
+  display: none;
+}
+
+
+.color-thumb {
+  
+  top: 4px;
+  left: 4px;
+  width: 28px;
+  height: 28px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: gray;
+  margin: 5px;
+  display: block;
+  float: left;
+  
+}
+
+ul.color-palette {
+  width: 200px;
+  height: 150px;
+  margin: 0;
+  padding: 0;
+}

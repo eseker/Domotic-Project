@@ -1,0 +1,97 @@
+extends layout
+
+block content
+  h1= title
+
+  script(src='javascripts/client.js')
+  script(src='javascripts/underscore.js')
+  script(src='javascripts/colorpicker.js')
+  p  The fabric&reg; #{title}
+  
+  
+  div
+    #rooms(data-role="fieldcontain")
+      label(for="roomid") Room
+      select#roomid
+        option(value='-1') -- choisir une chambre --
+        optgroup(label="Salon")
+        option(value='4') lampe central
+        option(value='12') capteur IR
+        optgroup(label="salle &agrave; manger")
+        option(value='21') lampe central
+        option(value='22') capteur IR
+        option(value='23') entr&eacutee
+      
+    #settings
+    
+      #room_setting(data-role="fieldcontain")
+        h2 Room Setting
+        div(data-role="fieldcontain")
+          label(for="btncolor") Color:
+          a#btncolor(data-role="button", data-inline="true", data-mini="true", href="#colorPopup", data-rel="popup") Select an Color
+            
+        div(data-role="fieldcontain")
+          label(for="flip-1") Interrupteur:
+          select#flip-1(data-role="slider")
+            option(value="off") Off
+            option(value="on") On
+          
+      
+      #sensor_setting
+        h2 Sensor Setting
+        label(for="flip-1") Timer:
+        .timeRangeInfo(data-role="fieldcontain")         
+          input#time_slider_min(type="range", name="time_slider_min", value="540", min="0", max="2879")
+          input#time_slider_max(type="range", name="time_slider_max", value="1020", min="0", max="2879", data-track-theme="b")
+        label#time 9:00 AM - 11:45 PM
+          
+        div(data-role="fieldcontain")
+          label(for="btncolor2") Color:
+          a#btncolor2(data-role="button", data-inline="true", data-mini="true", href="#colorPopup", data-rel="popup") Select an Color
+            
+        div(data-role="fieldcontain")
+          label(for="timelighing") Time of lighting (seconde) :
+          input#timelighing(type="text", name="name", value="")
+          
+
+    div(data-role="fieldcontain")
+      input#btnSendRequest(type='submit', value='Send Request')
+    
+    
+
+    
+  br
+  #requestResult(style='background-color: red;color:white;font-weight:bold;')
+  br
+  
+ 
+  #colorPopup(data-role="popup", data-overlay-theme="a", data-theme="c", style="max-width:400px;")
+    div(data-role="header", data-theme="a",  role="banner")
+      h1 Select color
+    div(data-role="content", data-theme="d",  role="main")
+      h3 Select color
+      
+      ul.color-palette
+        li.color-thumb(style="background-color:#ff4512")
+        li.color-thumb(style="background-color:#fd4g12")
+        li.color-thumb(style="background-color:#ae4a86")
+        li.color-thumb(style="background-color:#eeeeee")
+        li.color-thumb(style="background-color:#000000")
+        li.color-thumb(style="background-color:#946565")
+        li.color-thumb(style="background-color:#126954")
+        
+      a(href="#", data-role="button", data-inline="true", data-rel="back", data-theme="c", data-corners="true", data-shadow="true", data-iconshadow="true", data-wrapperels="span") 
+        span Cancel
+
+  br
+  br
+  
+  #footer
+  #logo
+    img(src='/images/LOGO-UNIGE.jpg')
+    div Copyright &copy; application Eseker #{+new Date().getFullYear()} 
+    a(href='/aboutus') About 
+    
+
+          
+  
