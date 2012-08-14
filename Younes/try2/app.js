@@ -103,7 +103,7 @@ var interval = setInterval(function() {
    	sminutes = parseInt(sensors.startTime % 60, 10),
 		shours = parseInt(sensors.startTime / 60 % 24, 10),
     eminutes= parseInt(sensors.endTime % 60, 10),
-    ehours = parseInt(sensors.endTime / 60 % 24, 10),
+    ehours = parseInt(sensors.endTime / 60 % 24, 10);
     
     if (hour == shours && minute == sminutes && sensor.running == false) {
       // TODO start listening the sensor here
