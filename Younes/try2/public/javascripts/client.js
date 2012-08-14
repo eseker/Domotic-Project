@@ -4,26 +4,19 @@ var selected = -1; // selected sensors
 var submit_button, room_setting, 
 sensor_setting, time_slider_min, 
 time_slider_max, time_label, room_selector, 
-lights_selector, interruptor_flip, timelighing;
+lights_selector, interruptor_flip, timelighing, sensor_color, device_color;
 
 
-var rooms = ["Salle &agrave; manger", "Salon"];
-var devices = [ 
-            {"id": 4, "sensor": false, "name" : "Lampe central", room: 0, interruptor:true, color:"#000000"},
-            {"id": 12, "sensor": true, "name" : "Capteur IR", room: 0, lights: [{"id": 4, "name" : "Lampe 1"}], startTime: 540, endTime:1020, duration:5 , color:"#000000", light:4},
-  				  {"id": 21, "sensor": false, "name" : "Lampe central", room: 1,  interruptor:true, color:"#000000"},
-            {"id": 22, "sensor": true, "name" : "Capteur IR", room: 1, lights: [{"id": 5, "name" : "Lampe 2"}], startTime: 540, endTime:1020, duration: 10, color:"#000000", light:5 },
-            {"id": 23, "sensor": false, "name" : "entr&eacutee", room: 1, interruptor:true, color:"#000000"}
-            ];
+var rooms;
+var devices;
 
 
-
-   
-function sensor_by_room(index){
+            
+function device_by_room(index){
   return _.filter(devices, function(element){ return element.room == index; });
 }
 
-function sensor_by_id(id){
+function device_by_id(id){
   return _.find(devices, function(element){ return element.id == id; });
 }
 
@@ -42,17 +35,20 @@ function populate(selector, elements)
 
 
 function select_devise(id){
-  var current = sensor_by_id(id);
+  var current = device_by_id(id);
+ 
   if( selected != current)
   {
     selected = current;
     
+   
      if (localStorage) {
         localStorage['selected'] = id;
       }
-    
+   
+   
     if(current){
-      if( selected.sensor){
+      if( selected.sensor == "true"){
         room_setting.hide();
         sensor_setting.show();
         submit_button.button('enable');		    
@@ -60,22 +56,23 @@ function select_devise(id){
         time_slider_min.val(parseInt(selected.startTime)).slider("refresh");
         time_slider_max.val(parseInt(selected.endTime)).slider("refresh");
               		   
+                     
         populate(lights_selector, selected.lights);            
         timelighing.val(parseInt(selected.duration)).slider("refresh");
-        
         lights_selector.val(selected.light).selectmenu('refresh');
         
+        sensor_color.css("background-color", current.color);
       }else {
         // show room settings
         room_setting.show();
         sensor_setting.hide();   
         
-        if (selected.interruptor)  
+        if (selected.interruptor == "true")  
           interruptor_flip.val('on').slider("refresh");
         else
           interruptor_flip.val('off').slider("refresh");
 
-        
+        device_color.css("background-color", current.color);
         submit_button.button('enable');	
       }
     }else{
@@ -91,10 +88,13 @@ function select_devise(id){
 
 
 
-function notifyChanged(){
-  if (localStorage) {
-    localStorage['devices'] = JSON.stringify(devices);
-  }
+function saveSettings(){
+ 
+  console.log("saving ", devices);
+  $.post("/settings", {data:devices}, function( data ){
+    console.log("/settings", data);
+  });
+  
 }
 
 
@@ -109,11 +109,19 @@ function slideTime(){
 		selected.startTime = val0;
 		selected.endTime  = val1;
     
-    notifyChanged();
-    
 	startTime = getTime(hours0, minutes0);
 	endTime = getTime(hours1, minutes1);
 	time_label.text(startTime + ' - ' + endTime);
+}
+
+// function to convert hex format to a rgb color
+function rgb2hex(rgb) {
+  var hexDigits = ["0","1","2","3","4","5","6","7","8","9","a","b","c","d","e","f"];
+  rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+  function hex(x) {
+    return isNaN(x) ? "00" : hexDigits[(x - x % 16) / 16] + hexDigits[x % 16];
+  }
+  return "#" + hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
 }
 
 
@@ -150,15 +158,53 @@ function sendRequest() {
   });
 
   $.post("/send", selected, function( data ){
-    $('#requestResult').html( data );
+    console.log("/send", data);
+    if(data == "ok"){
+        saveSettings();
+    }
     $.mobile.loading( 'hide');
+      
+    
   });
 
 };
 
 
+$('li.color-thumb').live('click', function(){
+    var color = rgb2hex($(this).css('background-color'));
+    selected.color = color;
+    if(selected.sensor == "true")
+    {
+      sensor_color.css("background-color", selected.color);  
+    }else {
+      device_color.css("background-color", selected.color);
+    }
+    $('#colorPopup').popup('close');
+});
+
 $('[data-role="page"]').live('pageshow', function () {
 
+
+
+$.mobile.loading( 'show', {
+    text: 'Load settings',
+    textVisible: true,
+    theme: 'a',
+    html: ""
+  });
+
+  $.getJSON("/settings", function( data ){
+    devices = data.devices;
+    rooms = data.rooms;
+    $.mobile.loading( 'hide');
+    init();
+  });
+  
+  
+});
+
+function init()
+{
   submit_button = $("#btnSendRequest");
   room_setting = $("#room_setting");
   sensor_setting= $("#sensor_setting"); 
@@ -169,6 +215,8 @@ $('[data-role="page"]').live('pageshow', function () {
   lights_selector = $("#lights_selector");
   interruptor_flip = $("#interruptor_flip");
   timelighing = $("#timelighing");
+  sensor_color = $("#sensor_color");
+  device_color = $("#device_color");
   
   interruptor_flip.slider('enable');
   
@@ -176,27 +224,15 @@ $('[data-role="page"]').live('pageshow', function () {
   submit_button.bind('click',sendRequest);
    
    
-  // restore last settings if possible
-  if (localStorage) {
-    // Le navigateur supporte le localStorage
-    if(localStorage['devices']){
-      try
-      {
-        devices = JSON.parse(localStorage['devices']); 
-      }catch(exception) { }
-    }
-  } 
-
-   $.each(rooms, function (i) {
-     var optgroup = $('<optgroup/>');
-     optgroup.attr('label', rooms[i]);
-     room_selector.append(optgroup);
+  $.each(rooms, function (i) {
+    var optgroup = $('<optgroup/>');
+    optgroup.attr('label', rooms[i]);
+    room_selector.append(optgroup);
      
-     // select devices
-     var elements = sensor_by_room(i);
-     populate(room_selector, elements);
-    
-   });
+    // select devices
+    var elements = device_by_room(i);
+    populate(room_selector, elements);
+  });
    
    
    // select the saved device
@@ -205,29 +241,27 @@ $('[data-role="page"]').live('pageshow', function () {
          select_devise(saved_id);
          room_selector.val(saved_id).selectmenu('refresh', true);
      }
-     
+   
+  
    
    // listening to room selector change
    room_selector.bind( "change", function(event, ui) {
+    console.log("device id"+parseInt(room_selector.val()));
      select_devise(parseInt(room_selector.val()));
-     notifyChanged();
   })
   
   lights_selector.bind( "change", function(event, ui) {
      selected.light = parseInt(lights_selector.val());
-     notifyChanged();
   })
   
   
   interruptor_flip.bind( "change", function(event, ui) {
     selected.interruptor = interruptor_flip.val() == "on" ? true : false;
-    notifyChanged();
   });
   
   timelighing.change(function() {
     var value = parseInt($(this).val());
     selected.duration = value;
-    notifyChanged();
   });
   
   //
@@ -253,5 +287,5 @@ $('[data-role="page"]').live('pageshow', function () {
   });
 
     
-});
+}
   

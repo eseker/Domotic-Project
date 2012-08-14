@@ -63,7 +63,22 @@ div.ui-slider {
   margin: 5px;
   display: block;
   float: left;
+  cursor: pointer;
   
+}
+
+.selected_color_thumb{
+    top: 15px;
+  left: 15px;
+  width: 28px;
+  height: 28px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: gray;
+  margin: 5px;
+  display: inline-block;
+  position: relative;
+  margin-right: 20px;
 }
 
 ul.color-palette {

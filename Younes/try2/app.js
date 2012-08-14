@@ -8,9 +8,25 @@ var express = require('express')
 var events = require('events');
 var util = require('util'); 
 var app = express();
+var _ = require('underscore');
 
 
 
+
+var data =
+{
+  rooms : ["Salle &agrave; manger", "Salon"],
+  devices : [ 
+            {id: 4, sensor: false, name : "Lampe central", room: 0, interruptor:true, color:"#000000"},
+            {id: 12, sensor: true, name : "Capteur IR", room: 0, lights: [{id: 4, name : "Lampe 1"}], startTime: 540, endTime:1020, duration:5 , color:"#000000", light:4},
+  				  {id: 21, sensor: false, name : "Lampe central", room: 1,  interruptor:true, color:"#000000"},
+            {id: 22, sensor: true, name : "Capteur IR", room: 1, lights: [{id: 5, name : "Lampe 2"}], startTime: 540, endTime:1020, duration: 10, color:"#000000", light:5 },
+            {id: 23, sensor: false, name : "entr&eacutee", room: 1, interruptor:true, color:"#000000"}
+            ]
+}
+
+
+            
 app.configure(function(){
   app.set('port', process.env.PORT || 3003);
   app.set('views', __dirname + '/views');
@@ -36,6 +52,18 @@ app.get('/aboutus', function(req, res){
   res.render('aboutus', { title: 'About us' });
 });
 
+app.get('/settings', function(req, res){
+    res.send(data);
+});
+
+app.post('/settings', function(req, res){
+    
+    
+    console.log(req.body.data)
+    data.devices = req.body.data;
+    
+    res.send(true);
+});
 
 app.post('/send', function(req, res){
   var devise = req.body;
@@ -61,38 +89,31 @@ http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
 });
 
-//var SerialPort = require("serialport").SerialPort;
-//var serialPort = new SerialPort("/dev/ttyO1", {baudrate : 57600});
-
-//data.pir();
-
-//serialPort.on("data", function (data) {
-//    console.log("valeur: "+data);
-//});
-
-//var fxpir =function(data){
-  //return data;
-//};
-/*app.post('/signup', function(req,res){
-  console.log(req.body);
-})
 
 
+var interval = setInterval(function() {
+  var now = new Date;
+  var hour = now.getHours();
+  var minute = now.getMinutes();
+  var sminutes, shours, eminutes, ehours
+  
+  var sensors = _.filter(data.devices, function(d){ return d.sensor == true; });
+  _.each(sensors, function(sensor)
+  { 
+   	sminutes = parseInt(sensors.startTime % 60, 10),
+		shours = parseInt(sensors.startTime / 60 % 24, 10),
+    eminutes= parseInt(sensors.endTime % 60, 10),
+    ehours = parseInt(sensors.endTime / 60 % 24, 10),
+    
+    if (hour == shours && minute == sminutes && sensor.running == false) {
+      // TODO start listening the sensor here
+      sensor.running = true;
+    }else if(hour == ehours && minute == eminutes && sensor.running == true){
+      // TODO stop listening the sensor here
+      sensor.running = false;
+    }
+    
+    
+  });
 
-
-app.use(express.logger('dev')); 
-app.use(express.bodyParser()); 
-
-app.get('/', function(req, res){ 
-  res.send('<form method="post"><button name="op" value="foo">Foo</ 
-button><button name="op" value="bar">Bar</button></form>'); 
-}); 
-
-app.post('/', function(req, res){ 
-  console.log(req.body); 
-}); 
-{ op: 'bar' } 
-{ op: 'foo' } 
-
-
-*/
+}, 1000);

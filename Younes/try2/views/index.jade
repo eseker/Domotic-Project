@@ -23,7 +23,8 @@ block content
         h2 Room Setting
         div(data-role="fieldcontain")
           label(for="btncolor") Color:
-          a#btncolor(data-role="button", data-inline="true", data-mini="true", href="#colorPopup", data-rel="popup") Select an Color
+          #device_color.selected_color_thumb(style="background-color:#ff4512")
+          a#btncolor(data-role="button", data-inline="true", data-mini="true", href="#colorPopup", data-rel="popup") Change
         
         div(data-role="fieldcontain")
           label(for="interruptor_flip") Interrupteur:
@@ -41,7 +42,8 @@ block content
       
         div(data-role="fieldcontain")
           label(for="btncolor2") Color:
-          a#btncolor2(data-role="button", data-inline="true", data-mini="true", href="#colorPopup", data-rel="popup") Select an Color
+          #sensor_color.selected_color_thumb(style="background-color:#ff4512")
+          a#btncolor2(data-role="button", data-inline="true", data-mini="true", href="#colorPopup", data-rel="popup") Change
         
         div(data-role="fieldcontain")
             label(for="lights_selector") Lights
@@ -51,10 +53,6 @@ block content
         div(data-role="fieldcontain")
           label(for="timelighing") Time of lighting (seconde) :
           input#timelighing(type="number", data-type="range", value="50",  min="1", max="60", data-track-theme="b")
-
-          
-          
-      
 
     div(data-role="fieldcontain")
       input#btnSendRequest(type='submit', value='Send Request')
@@ -75,8 +73,8 @@ block content
       
         ul.color-palette
           li.color-thumb(style="background-color:#ff4512")
-          li.color-thumb(style="background-color:#fd4g12")
-          li.color-thumb(style="background-color:#ae4a86")
+          li.color-thumb(style="background-color:#fd4f12")
+          li.color-thumb(style="background-color:#ff0000")
           li.color-thumb(style="background-color:#eeeeee")
           li.color-thumb(style="background-color:#000000")
           li.color-thumb(style="background-color:#946565")
