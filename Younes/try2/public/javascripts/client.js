@@ -4,15 +4,15 @@ var selected = -1; // selected sensors
 var submit_button, room_setting, 
 sensor_setting, time_slider_min, 
 time_slider_max, time_label, room_selector, 
-lignts_selector, interruptor_flip, timelighing;
+lights_selector, interruptor_flip, timelighing;
 
 
 var rooms = ["Salle &agrave; manger", "Salon"];
 var devices = [ 
             {"id": 4, "sensor": false, "name" : "Lampe central", room: 0, interruptor:true, color:"#000000"},
-            {"id": 12, "sensor": true, "name" : "Capteur IR", room: 0, lights: [{"id": 4, "name" : "Lampe 1"}], startTime: 540, endTime:1020, duration:5 , color:"#000000"},
+            {"id": 12, "sensor": true, "name" : "Capteur IR", room: 0, lights: [{"id": 4, "name" : "Lampe 1"}], startTime: 540, endTime:1020, duration:5 , color:"#000000", light:4},
   				  {"id": 21, "sensor": false, "name" : "Lampe central", room: 1,  interruptor:true, color:"#000000"},
-            {"id": 22, "sensor": true, "name" : "Capteur IR", room: 1, lights: [{"id": 5, "name" : "Lampe 2"}], startTime: 540, endTime:1020, duration: 10, color:"#000000" },
+            {"id": 22, "sensor": true, "name" : "Capteur IR", room: 1, lights: [{"id": 5, "name" : "Lampe 2"}], startTime: 540, endTime:1020, duration: 10, color:"#000000", light:5 },
             {"id": 23, "sensor": false, "name" : "entr&eacutee", room: 1, interruptor:true, color:"#000000"}
             ];
 
@@ -60,8 +60,10 @@ function select_devise(id){
         time_slider_min.val(parseInt(selected.startTime)).slider("refresh");
         time_slider_max.val(parseInt(selected.endTime)).slider("refresh");
               		   
-        populate(lignts_selector, selected.lights);            
+        populate(lights_selector, selected.lights);            
         timelighing.val(parseInt(selected.duration)).slider("refresh");
+        
+        lights_selector.val(selected.light).selectmenu('refresh');
         
       }else {
         // show room settings
@@ -164,7 +166,7 @@ $('[data-role="page"]').live('pageshow', function () {
   time_slider_max = $('#time_slider_max');  
   time_label= $("#time_label");
   room_selector= $("#room_selector");
-  lignts_selector = $("#lignts_selector");
+  lights_selector = $("#lights_selector");
   interruptor_flip = $("#interruptor_flip");
   timelighing = $("#timelighing");
   
@@ -208,7 +210,14 @@ $('[data-role="page"]').live('pageshow', function () {
    // listening to room selector change
    room_selector.bind( "change", function(event, ui) {
      select_devise(parseInt(room_selector.val()));
+     notifyChanged();
   })
+  
+  lights_selector.bind( "change", function(event, ui) {
+     selected.light = parseInt(lights_selector.val());
+     notifyChanged();
+  })
+  
   
   interruptor_flip.bind( "change", function(event, ui) {
     selected.interruptor = interruptor_flip.val() == "on" ? true : false;

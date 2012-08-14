@@ -41,8 +41,13 @@ app.post('/send', function(req, res){
   var devise = req.body;
   /*
       send request via serial port here
-      //devise.id, devise.color, devise.sensor, etc ...
-    
+      
+      available properties for light :
+      - id, color(hex), interruptor(boolean)
+      
+      available properties for sensor :
+      - startTime(minute), endTime(minute), duration(seconde), color(hex), light
+      
       var message =[];
       message[0]= devise.id.toString(16);
       message[1]= devise.color.toString(16);
