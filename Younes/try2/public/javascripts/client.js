@@ -48,7 +48,7 @@ function select_devise(id){
    
    
     if(current){
-      if( selected.sensor == "true"){
+      if( selected.sensor == true){
         room_setting.hide();
         sensor_setting.show();
         submit_button.button('enable');		    
@@ -57,7 +57,7 @@ function select_devise(id){
         time_slider_max.val(parseInt(selected.endTime)).slider("refresh");
               		   
                      
-        populate(lights_selector, selected.lights);            
+                 
         timelighing.val(parseInt(selected.duration)).slider("refresh");
         lights_selector.val(selected.light).selectmenu('refresh');
         
@@ -173,7 +173,7 @@ function sendRequest() {
 $('li.color-thumb').live('click', function(){
     var color = rgb2hex($(this).css('background-color'));
     selected.color = color;
-    if(selected.sensor == "true")
+    if(selected.sensor == true)
     {
       sensor_color.css("background-color", selected.color);  
     }else {
@@ -229,10 +229,12 @@ function init()
     var optgroup = $('<optgroup/>');
     optgroup.attr('label', rooms[i]);
     room_selector.append(optgroup);
-     
+    lights_selector.append(optgroup);
+    
     // select devices
     var elements = device_by_room(i);
     populate(room_selector, elements);
+    populate(lights_selector, elements);    
   });
    
    

@@ -18,9 +18,9 @@ var data =
   rooms : ["Salle &agrave; manger", "Salon"],
   devices : [ 
             {id: 4, sensor: false, name : "Lampe central", room: 0, interruptor:true, color:"#000000"},
-            {id: 12, sensor: true, name : "Capteur IR", room: 0, lights: [{id: 4, name : "Lampe 1"}], startTime: 540, endTime:1020, duration:5 , color:"#000000", light:4},
+            {id: 12, sensor: true, name : "Capteur IR", room: 0, startTime: 540, endTime:1020, duration:5 , color:"#000000", light:4},
   				  {id: 21, sensor: false, name : "Lampe central", room: 1,  interruptor:true, color:"#000000"},
-            {id: 22, sensor: true, name : "Capteur IR", room: 1, lights: [{id: 5, name : "Lampe 2"}], startTime: 540, endTime:1020, duration: 10, color:"#000000", light:5 },
+            {id: 22, sensor: true, name : "Capteur IR", room: 1, startTime: 540, endTime:1020, duration: 10, color:"#000000", light:5 },
             {id: 23, sensor: false, name : "entr&eacutee", room: 1, interruptor:true, color:"#000000"}
             ]
 }
