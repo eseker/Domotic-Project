@@ -96,7 +96,7 @@ app.post('/send', function(req, res){
 function toRGB(h) 
 {
   var cut = (h.charAt(0)=="#") ? h.substring(1,7):h;
-  return [cut.substring(0,2).toString(16), cut.substring(2,4).toString(16), cut.substring(4,6).toString(16)];
+  return [parseInt(cut.substring(0,2),16), parseInt(cut.substring(2,4),16), parseInt(cut.substring(4,6),16)];
 }
 
 http.createServer(app).listen(app.get('port'), function(){
