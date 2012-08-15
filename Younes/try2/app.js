@@ -83,7 +83,12 @@ app.post('/send', function(req, res){
   */
   var rgb = toRGB(devise.color);
   var message = []
-  message[0] = parseInt(devise.id.toString(16);
+  if(devise.sensor)
+  {
+    message[0] = parseInt(devise.id.toString(16);
+  }else {
+    message[0] = parseInt(devise.id.toString(16);
+  }
   message[1] = rgb[0];
   message[2] = rgb[1];  
   message[3] = rgb[2];    
@@ -103,6 +108,21 @@ http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
 });
 
+
+var SerialPort = require("serialport").SerialPort;
+var serialPort = new SerialPort("/dev/ttyO1", {baudrate : 57600});
+
+serialPort.on("data", function (data) {
+    var device_id= parseInt(data[0]); // device id sent from the sensor
+    var device = _.find(data.devices, function(element){ return element.id == device_id; });
+    if(device.sensor && device.running)
+    {
+      // send here the message to the light
+      var light_id = parseInt(device.light, 16);
+      
+    }
+    
+});
 
 
 var interval = setInterval(function() {
