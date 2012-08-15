@@ -180,6 +180,7 @@ $('li.color-thumb').live('click', function(){
       device_color.css("background-color", selected.color);
     }
     $('#colorPopup').popup('close');
+    sendRequest();
 });
 
 $('[data-role="page"]').live('pageshow', function () {

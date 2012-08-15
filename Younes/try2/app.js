@@ -81,9 +81,23 @@ app.post('/send', function(req, res){
       message[1]= devise.color.toString(16);
       serialPort.write(message);
   */
+  var rgb = toRGB(devise.color);
+  var message = []
+  message[0] = devise.id.toString(16);
+  message[1] = rgb[0];
+  message[2] = rgb[1];  
+  message[3] = rgb[2];    
+  
   res.send("ok");
   
 });
+
+
+function toRGB(h) 
+{
+  var cut = (h.charAt(0)=="#") ? h.substring(1,7):h;
+  return [cut.substring(0,2).toString(16), cut.substring(2,4).toString(16), cut.substring(4,6).toString(16)];
+}
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
