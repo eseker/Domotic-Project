@@ -83,7 +83,7 @@ app.post('/send', function(req, res){
   */
   var rgb = toRGB(devise.color);
   var message = []
-  message[0] = devise.id.toString(16);
+  message[0] = parseInt(devise.id.toString(16);
   message[1] = rgb[0];
   message[2] = rgb[1];  
   message[3] = rgb[2];    
