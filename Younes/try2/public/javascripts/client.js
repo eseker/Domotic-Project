@@ -42,11 +42,6 @@ function select_devise(id){
     selected = current;
     
    
-     if (localStorage) {
-        localStorage['selected'] = id;
-      }
-   
-   
     if(current){
       if( selected.sensor == true){
         room_setting.hide();
@@ -237,16 +232,7 @@ function init()
     populate(lights_selector, elements);    
   });
    
-   
-   // select the saved device
-    if(localStorage['selected']){
-         var saved_id = parseInt(localStorage['selected']);
-         select_devise(saved_id);
-         room_selector.val(saved_id).selectmenu('refresh', true);
-     }
-   
   
-   
    // listening to room selector change
    room_selector.bind( "change", function(event, ui) {
     console.log("device id"+parseInt(room_selector.val()));

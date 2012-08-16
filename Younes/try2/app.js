@@ -63,6 +63,41 @@ var data = {
 	]
 }
 
+
+
+var interval = setInterval(function () {
+		var now = new Date;
+		var hour = now.getHours();
+		var minute = now.getMinutes();
+		var sminutes,
+		shours,
+		eminutes,
+		ehours
+		
+		var sensors = _.filter(data.devices, function (d) {
+				return d.sensor == true;
+			});
+      
+     
+     
+		_.each(sensors, function (sensor) {
+			sminutes = parseInt(sensor.startTime % 60, 10),
+			shours = parseInt(sensor.startTime / 60 % 24, 10),
+			eminutes = parseInt(sensor.endTime % 60, 10),
+			ehours = parseInt(sensor.endTime / 60 % 24, 10);
+			
+      console.log(sensor.running);
+      if (hour >= shours && hour < ehours && minute >= sminutes && sensor.running == false) {
+             sensor.running = true;       
+			} else if (hour > ehours && minute > ehours &&  sensor.running == true) {
+          sensor.running = false;       
+			}
+			
+		});
+		
+	}, 1000);
+
+  
 app.configure(function () {
 	app.set('port', process.env.PORT || 3003);
 	app.set('views', __dirname + '/views');
@@ -98,9 +133,17 @@ app.get('/settings', function (req, res) {
 
 app.post('/settings', function (req, res) {
 	
-	console.log(req.body.data)
-	data.devices = req.body.data;
+  
+  // convert string to boolean
+  _.each(req.body.data, function (device) {
+      device.interruptor = ( device.interruptor == "true");
+      device.sensor = ( device.sensor == "true");
+      // restaure running value
+      var old = _.find(data.devices, function(element){ return element.id == device.id; });
+      device.running= old.running;
+  });
 	
+	data.devices = req.body.data;
 	res.send(true);
 });
 
@@ -108,7 +151,7 @@ app.post('/send', function (req, res) {
 	var device = req.body;
 	
 	// send message only for lights
-	if (device.sensor == "false") {
+	if (!device.sensor) {
 		var rgb = toRGB(device.color);
 		var message = []
 		message[0] = parseInt(device.id.toString(16));
@@ -116,14 +159,14 @@ app.post('/send', function (req, res) {
 		message[2] = rgb[1];
 		message[3] = rgb[2];
 		message[4] = device.duration;
-		serialPort.write(message);
+		//serialPort.write(message);
 		console.log(message);
 	}
 	res.send("ok");
 	
 });
 
-
+*/
 serialPort.on("data", function (sdata) {
 	console.log("here: " + sdata[3]);
 	var device_id = parseInt(sdata[3]); // device id sent from the sensor
@@ -156,6 +199,7 @@ serialPort.on("data", function (sdata) {
 	
 });
 
+
 function toRGB(h) {
 	var cut = (h.charAt(0) == "#") ? h.substring(1, 7) : h;
 	return [parseInt(cut.substring(0, 2), 16), parseInt(cut.substring(2, 4), 16), parseInt(cut.substring(4, 6), 16)];
@@ -164,31 +208,3 @@ function toRGB(h) {
 http.createServer(app).listen(app.get('port'), function () {
 	console.log("Express server listening on port " + app.get('port'));
 });
-
-var interval = setInterval(function () {
-		var now = new Date;
-		var hour = now.getHours();
-		var minute = now.getMinutes();
-		var sminutes,
-		shours,
-		eminutes,
-		ehours
-		
-		var sensors = _.filter(data.devices, function (d) {
-				return d.sensor == 'true;'
-			});
-		_.each(sensors, function (sensor) {
-			sminutes = parseInt(sensors.startTime % 60, 10),
-			shours = parseInt(sensors.startTime / 60 % 24, 10),
-			eminutes = parseInt(sensors.endTime % 60, 10),
-			ehours = parseInt(sensors.endTime / 60 % 24, 10);
-			
-			if (hour == shours && minute == sminutes && sensor.running == 'false') {
-				sensor.running = 'true';
-			} else if (hour == ehours && minute == eminutes && sensor.running == 'true') {
-				sensor.running = 'false';
-			}
-			
-		});
-		
-	}, 1000);
