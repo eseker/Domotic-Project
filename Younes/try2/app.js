@@ -32,7 +32,8 @@ var data = {
 			endTime : 1020,
 			duration : 5,
 			color : "#000000",
-			light : 4
+			light : 4,
+      running: false
 		}, {
 			id : 21,
 			sensor : false,
@@ -49,7 +50,8 @@ var data = {
 			endTime : 1020,
 			duration : 10,
 			color : "#000000",
-			light : 5
+			light : 5,
+      running: false
 		}, {
 			id : 23,
 			sensor : false,
@@ -139,7 +141,7 @@ serialPort.on("data", function (sdata) {
 			
 			var rgb = toRGB(device.color);
 			var message = []
-			message[0] = device.light;
+			message[0] = parseInt(device.light.toString(16));
 			message[1] = rgb[0];
 			message[2] = rgb[1];
 			message[3] = rgb[2];
