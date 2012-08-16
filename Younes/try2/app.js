@@ -114,12 +114,18 @@ var serialPort = new SerialPort("/dev/ttyO1", {baudrate : 57600});
 
 serialPort.on("data", function (data) {
     var device_id= parseInt(data[0]); // device id sent from the sensor
+    console.log("device_id sent :"+device_id);
     var device = _.find(data.devices, function(element){ return element.id == device_id; });
-    if(device.sensor && device.running)
+    if(device)
     {
-      // send here the message to the light
-      var light_id = parseInt(device.light, 16);
-      
+      if(device.sensor && device.running)
+      {
+        // send here the message to the light
+        var light_id = parseInt(device.light, 16);
+        
+      }
+    }else{
+      console.log("devise not found");
     }
     
 });
