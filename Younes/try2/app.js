@@ -108,7 +108,7 @@ app.post('/send', function (req, res) {
 	var device = req.body;
 	
 	// send message only for lights
-	if (device.sensor) {
+	if (device.sensor == "false") {
 		var rgb = toRGB(device.color);
 		var message = []
 		message[0] = parseInt(device.id.toString(16));
@@ -136,7 +136,7 @@ serialPort.on("data", function (sdata) {
 	
 	if (device) {
     console.log(device);
-		if (device.sensor && device.running) {
+		if (device.sensor == 'true' && device.running == 'true') {
 			// send here the message to the light
 			
 			var rgb = toRGB(device.color);
@@ -145,7 +145,7 @@ serialPort.on("data", function (sdata) {
 			message[1] = rgb[0];
 			message[2] = rgb[1];
 			message[3] = rgb[2];
-			message[4] = device.duration*1000; // convert to miliseconde
+			message[4] = parseInt(device.duration.toString(16))*1000; // convert to miliseconde
 			serialPort.write(message);
 			console.log(message);
 			
@@ -175,7 +175,7 @@ var interval = setInterval(function () {
 		ehours
 		
 		var sensors = _.filter(data.devices, function (d) {
-				return d.sensor == true;
+				return d.sensor == 'true;'
 			});
 		_.each(sensors, function (sensor) {
 			sminutes = parseInt(sensors.startTime % 60, 10),
@@ -183,10 +183,10 @@ var interval = setInterval(function () {
 			eminutes = parseInt(sensors.endTime % 60, 10),
 			ehours = parseInt(sensors.endTime / 60 % 24, 10);
 			
-			if (hour == shours && minute == sminutes && sensor.running == false) {
-				sensor.running = true;
-			} else if (hour == ehours && minute == eminutes && sensor.running == true) {
-				sensor.running = false;
+			if (hour == shours && minute == sminutes && sensor.running == 'false') {
+				sensor.running = 'true';
+			} else if (hour == ehours && minute == eminutes && sensor.running == 'true') {
+				sensor.running = 'false';
 			}
 			
 		});
