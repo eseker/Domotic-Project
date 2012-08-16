@@ -103,17 +103,17 @@ app.post('/settings', function (req, res) {
 });
 
 app.post('/send', function (req, res) {
-	var devise = req.body;
+	var device = req.body;
 	
 	// send message only for lights
-	if (devise.sensor) {
-		var rgb = toRGB(devise.color);
+	if (device.sensor) {
+		var rgb = toRGB(device.color);
 		var message = []
-		message[0] = parseInt(devise.id.toString(16));
+		message[0] = parseInt(device.id.toString(16));
 		message[1] = rgb[0];
 		message[2] = rgb[1];
 		message[3] = rgb[2];
-		message[4] = devise.duration;
+		message[4] = device.duration;
 		serialPort.write(message);
 		console.log(message);
 	}
@@ -124,32 +124,32 @@ app.post('/send', function (req, res) {
 
 serialPort.on("data", function (sdata) {
 	console.log("here: " + sdata[3]);
-	var devise_id = parseInt(sdata[3]); // device id sent from the sensor
-	console.log("devise_id sent :" + devise_id);
+	var device_id = parseInt(sdata[3]); // device id sent from the sensor
+	console.log("device_id sent :" + device_id);
   
-  console.log("compare test :", (devise_id == 10));
-	var devise = _.find(data.devises, function (element) {
-			return element.id == devise_id;
+  console.log("compare test :", (device_id == 10));
+	var device = _.find(data.devices, function (element) {
+			return element.id == device_id;
 		});
 	
-	if (devise) {
-    console.log(devise);
-		if (devise.sensor && devise.running) {
+	if (device) {
+    console.log(device);
+		if (device.sensor && device.running) {
 			// send here the message to the light
 			
-			var rgb = toRGB(devise.color);
+			var rgb = toRGB(device.color);
 			var message = []
-			message[0] = devise.light;
+			message[0] = device.light;
 			message[1] = rgb[0];
 			message[2] = rgb[1];
 			message[3] = rgb[2];
-			message[4] = devise.duration*1000; // convert to miliseconde
+			message[4] = device.duration*1000; // convert to miliseconde
 			serialPort.write(message);
 			console.log(message);
 			
 		}
 	} else {
-		console.log("devise not found");
+		console.log("device not found");
 	}
 	
 });
