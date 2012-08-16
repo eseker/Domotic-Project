@@ -78,19 +78,19 @@ var interval = setInterval(function () {
 				return d.sensor == true;
 			});
       
-     
-     
+
 		_.each(sensors, function (sensor) {
 			sminutes = parseInt(sensor.startTime % 60, 10),
 			shours = parseInt(sensor.startTime / 60 % 24, 10),
 			eminutes = parseInt(sensor.endTime % 60, 10),
 			ehours = parseInt(sensor.endTime / 60 % 24, 10);
 			
-      console.log(sensor.running);
-      if (hour >= shours && hour < ehours && minute >= sminutes && sensor.running == false) {
-             sensor.running = true;       
-			} else if (hour > ehours && minute > ehours &&  sensor.running == true) {
-          sensor.running = false;       
+      if (hour >= shours && hour < ehours && sensor.running == false) {
+        sensor.running = true;     
+        console.log("sensor id="+sensor.id+" ON");  
+			} else if (hour > ehours &&  sensor.running == true) {
+        sensor.running = false;       
+        console.log("sensor id="+sensor.id+" OFF");        
 			}
 			
 		});
@@ -99,14 +99,13 @@ var interval = setInterval(function () {
 
   
 app.configure(function () {
-	app.set('port', process.env.PORT || 3003);
+	app.set('port', process.env.PORT || 80);
 	app.set('views', __dirname + '/views');
 	app.set('view engine', 'jade');
 	app.use(express.favicon());
 	app.use(express.logger('dev'));
 	app.use(express.bodyParser());
 	app.use(express.methodOverride());
-	app.use(app.router);
 	//app.use(express.static(__dirname + '/public'));
 	app.use(express.static(require('path').resolve(__dirname + "/public")));
 });
@@ -151,22 +150,20 @@ app.post('/send', function (req, res) {
 	var device = req.body;
 	
 	// send message only for lights
-	if (!device.sensor) {
+	if (device.sensor == "false") {
 		var rgb = toRGB(device.color);
 		var message = []
 		message[0] = parseInt(device.id.toString(16));
 		message[1] = rgb[0];
 		message[2] = rgb[1];
 		message[3] = rgb[2];
-		message[4] = device.duration;
-		//serialPort.write(message);
+		serialPort.write(message);
 		console.log(message);
 	}
 	res.send("ok");
 	
 });
 
-*/
 serialPort.on("data", function (sdata) {
 	console.log("here: " + sdata[3]);
 	var device_id = parseInt(sdata[3]); // device id sent from the sensor
@@ -179,7 +176,7 @@ serialPort.on("data", function (sdata) {
 	
 	if (device) {
     console.log(device);
-		if (device.sensor == 'true' && device.running == 'true') {
+		if (device.sensor == true && device.running == true) {
 			// send here the message to the light
 			
 			var rgb = toRGB(device.color);
