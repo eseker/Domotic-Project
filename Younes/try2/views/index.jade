@@ -9,6 +9,7 @@ block content
     script(src='javascripts/client.js')
     script(src='javascripts/underscore.js')
     p  The fabric&reg; #{title}
+<<<<<<< HEAD
   
 
     #rooms(data-role="fieldcontain")
@@ -17,6 +18,18 @@ block content
         option(value='-1', selected=true) -- choisir une chambre --
 
   
+=======
+  
+
+    #rooms
+    
+    P(data-role="fieldcontain")
+      label(for="room_selector") Room
+      select#room_selector
+        option(value='-1', selected=true) -- choisir une chambre --
+
+  
+>>>>>>> message
     #settings
 
       #room_setting(data-role="fieldcontain")
@@ -36,8 +49,13 @@ block content
       #sensor_setting
         h2 Sensor Setting
         .timeRangeInfo(data-role="fieldcontain")
+<<<<<<< HEAD
           input#time_slider_min(type="range", name="time_slider_min", value="0", min="0", max="2879")
           input#time_slider_max(type="range", name="time_slider_max", value="2879", min="0", max="2879", data-track-theme="b")
+=======
+          input#time_slider_min(type="range", name="time_slider_min", value="540", min="0", max="2879")
+          input#time_slider_max(type="range", name="time_slider_max", value="1020", min="0", max="2879", data-track-theme="b")
+>>>>>>> message
         label#time_label 9:00 AM - 11:45 PM
       
         div(data-role="fieldcontain")
@@ -72,6 +90,7 @@ block content
         h3 Select color
       
         ul.color-palette
+<<<<<<< HEAD
           li.color-thumb(style="background-color:#ff4512")
           li.color-thumb(style="background-color:#fd4f12")
           li.color-thumb(style="background-color:#ff0000")
@@ -80,6 +99,18 @@ block content
           li.color-thumb(style="background-color:#946565")
           li.color-thumb(style="background-color:#126954")
         
+=======
+          li.color-thumb(style="background-color:#0000ff")
+          li.color-thumb(style="background-color:#fd4f12")
+          li.color-thumb(style="background-color:#ff0000")
+          li.color-thumb(style="background-color:#946565")
+          li.color-thumb(style="background-color:#126954")
+          li.color-thumb(style="background-color:#00ff00")
+          li.color-thumb(style="background-color:#eeeeee")
+          li.color-thumb(style="background-color:#000000")
+          li.color-thumb(style="background-color:#946565")
+          li.color-thumb(style="background-color:#ffffff")
+>>>>>>> message
         a(href="#", data-role="button", data-inline="true", data-rel="back", data-theme="c", data-corners="true", data-shadow="true", data-iconshadow="true", data-wrapperels="span") 
           span Cancel
 
