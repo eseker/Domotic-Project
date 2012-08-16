@@ -19,7 +19,7 @@ var data = {
 	devices : [{
 			id : 4,
 			sensor : false,
-			name : "Lampe central",
+			name : "Lampe centrale",
 			room : 0,
 			interruptor : true,
 			color : "#000000"
@@ -37,7 +37,7 @@ var data = {
 		}, {
 			id : 21,
 			sensor : false,
-			name : "Lampe central",
+			name : "Lampe centrale",
 			room : 1,
 			interruptor : true,
 			color : "#000000"
@@ -55,7 +55,7 @@ var data = {
 		}, {
 			id : 23,
 			sensor : false,
-			name : "entr&eacutee",
+			name : "entrée",
 			room : 1,
 			interruptor : true,
 			color : "#000000"
@@ -157,6 +157,7 @@ app.post('/send', function (req, res) {
 		message[1] = rgb[0];
 		message[2] = rgb[1];
 		message[3] = rgb[2];
+		message[4]= 0;
 		serialPort.write(message);
 		console.log(message);
 	}
@@ -185,7 +186,7 @@ serialPort.on("data", function (sdata) {
 			message[1] = rgb[0];
 			message[2] = rgb[1];
 			message[3] = rgb[2];
-			message[4] = parseInt(device.duration.toString(16))*1000; // convert to miliseconde
+			message[4] = parseInt(device.duration.toString(16));//*1000; // convert to miliseconde
 			serialPort.write(message);
 			console.log(message);
 			

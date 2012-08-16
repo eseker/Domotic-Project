@@ -1,0 +1,15 @@
+extends layout
+
+block content
+  h1= title
+  h2 Bachelor's thesis
+  h3 Domotic Project in association with The Fabric ®
+  h4 Write by Erdem Seker with Xavier Rigehtti, professor Patrick Roth and valided by professor Gilles Falquet
+
+  p This Bachelor’s thesis aims to create a communication protocol and a mobile web interface compatible with all the mobile device (ios /Android) to control and automate sensors and controllers in automation systems manufactured by the Fabric ® (light controller, motion sensor) based on Arduino ® platform through a server Beaglebone ®. This in order to be able to control his house from his mobile phone.  We will use different langage to code this porject : firstly, we ll’ use Node.js  to programing the house server, it will be the the common interface with controllers/sensors  and the mobile application. Secondly, we ll’ use a kind of langage « C » to code the controllers and sensors. They use an Atmega chip. Thirdly, we ll’ use Jquery mobile, a unified, HTML5-based user interface system to make user firendly interface . Finally we would like  to industrialise the product in large scale and sell it in a different kit in a shop for a cheap price.
+ 
+  #footer
+  #logo
+    img(src='/images/LOGO-UNIGE.jpg')
+    div Copyright &copy; application Eseker #{+new Date().getFullYear()} 
+    a(href='/') App 

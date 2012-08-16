@@ -1,0 +1,14 @@
+Express server listening on port 80
+[90mGET / [32m200 [90m649ms - 1.62kb[0m
+[90mGET /stylesheets/style.css [36m304 [90m50ms[0m
+[90mGET /javascripts/client.js [36m304 [90m19ms[0m
+[90mGET /javascripts/client.js?_=1343331343768 [32m200 [90m91ms - 1.11kb[0m
+[90mGET /images/LOGO-UNIGE.jpg [36m304 [90m28ms[0m
+Express server listening on port 80
+[90mGET / [32m200 [90m714ms - 1.62kb[0m
+[90mGET /stylesheets/style.css [36m304 [90m62ms[0m
+[90mGET /javascripts/client.js [36m304 [90m22ms[0m
+[90mGET /images/LOGO-UNIGE.jpg [36m304 [90m17ms[0m
+[90mGET /javascripts/client.js?_=1343331378851 [32m200 [90m20ms - 1.11kb[0m
+4R255G0B0F
+[90mGET /room/4/255/0/0 [32m200 [90m7925ms - 60[0m

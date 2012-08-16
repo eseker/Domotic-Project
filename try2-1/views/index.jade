@@ -1,0 +1,116 @@
+extends layout
+
+block content
+
+
+  div(data-role="page")
+    h1= title
+
+    script(src='javascripts/client.js')
+    script(src='javascripts/underscore.js')
+    p  The fabric&reg; #{title}
+  
+
+    #rooms(data-role="fieldcontain")
+      label(for="room_selector") 
+      h2 Room
+      P
+      select#room_selector
+        option(value='-1', selected=true) -- choisir une chambre --
+
+  
+    #settings
+
+      #room_setting(data-role="fieldcontain")
+        h2 Room Setting
+        div(data-role="fieldcontain")
+          label(for="btncolor") Color:
+          #device_color.selected_color_thumb(style="background-color:#ff4512")
+          a#btncolor(data-role="button", data-inline="true", data-mini="true", href="#colorPopup", data-rel="popup") Change
+        
+        div(data-role="fieldcontain")
+          label(for="interruptor_flip") Interrupteur:
+          P
+          select#interruptor_flip(data-role="slider")
+            option(value="off") Off
+            option(value="on") On
+      
+  
+      #sensor_setting
+        h2 Sensor Setting
+        P
+        aaaa Time Range
+        P
+        .timeRangeInfo(data-role="fieldcontain")
+          input#time_slider_min(type="range", name="time_slider_min", value="0", min="0", max="2879")
+          input#time_slider_max(type="range", name="time_slider_max", value="2879", min="0", max="2879", data-track-theme="b")
+        label#time_label 9:00 AM - 11:45 PM
+      
+        div(data-role="fieldcontain")
+          label(for="btncolor2") Color:
+          #sensor_color.selected_color_thumb(style="background-color:#ff4512")
+          a#btncolor2(data-role="button", data-inline="true", data-mini="true", href="#colorPopup", data-rel="popup") Change
+        
+        div(data-role="fieldcontain")
+            label(for="lights_selector") Lights
+            P
+            select#lights_selector
+              option(value='-1', selected=true) -- choisir une lampe --
+                      
+        div(data-role="fieldcontain")
+          label(for="timelighing") Time of lighting (seconde) :
+          input#timelighing(type="number", data-type="range", value="50",  min="1", max="60", data-track-theme="b")
+
+    div(data-role="fieldcontain")
+      input#btnSendRequest(type='submit', value='Send Request')
+
+
+
+    
+    br
+    #requestResult(style='background-color: red;color:white;font-weight:bold;')
+    br
+  
+ 
+    #colorPopup(data-role="popup", data-overlay-theme="a", data-theme="c", style="max-width:400px;")
+      div(data-role="header", data-theme="a",  role="banner")
+        h1 Select color
+      div(data-role="content", data-theme="d",  role="main")
+        h3 Select color
+      
+        ul.color-palette
+          li.color-thumb(style="background-color:#000000")
+          li.color-thumb(style="background-color:#ED1C24")
+          li.color-thumb(style="background-color:#F26522")
+          li.color-thumb(style="background-color:#F7941D")
+          li.color-thumb(style="background-color:#FFF200")
+          li.color-thumb(style="background-color:#8DC73F")
+          li.color-thumb(style="background-color:#39B54A")
+          li.color-thumb(style="background-color:#00A651")
+          li.color-thumb(style="background-color:#00A99D")
+          li.color-thumb(style="background-color:#00AEEF")
+          li.color-thumb(style="background-color:#0072BC")
+          li.color-thumb(style="background-color:#0054A6")
+          li.color-thumb(style="background-color:#2E3192")
+          li.color-thumb(style="background-color:#662D91")
+          li.color-thumb(style="background-color:#92278F")
+          li.color-thumb(style="background-color:#EC008C")
+          li.color-thumb(style="background-color:#ED145B")
+          li.color-thumb(style="background-color:#FFFFFF")
+         
+        
+        a(href="#", data-role="button", data-inline="true", data-rel="back", data-theme="c", data-corners="true", data-shadow="true", data-iconshadow="true", data-wrapperels="span") 
+          span Cancel
+
+    br
+    br
+  
+    #footer
+    #logo
+      img(src='/images/LOGO-UNIGE.jpg')
+      div Copyright &copy; application Eseker #{+new Date().getFullYear()} 
+      a(href='/aboutus') About 
+    
+
+          
+  
