@@ -127,10 +127,11 @@ serialPort.on("data", function (data) {
 	var devise_id = parseInt(data[3]); // device id sent from the sensor
 	console.log("devise_id sent :" + devise_id);
 	var devise = _.find(data.devises, function (element) {
-			return element.id == device_id;
+			return element.id == devise_id;
 		});
 	
 	if (devise) {
+    console.log(devise);
 		if (devise.sensor && devise.running) {
 			// send here the message to the light
 			
@@ -140,7 +141,7 @@ serialPort.on("data", function (data) {
 			message[1] = rgb[0];
 			message[2] = rgb[1];
 			message[3] = rgb[2];
-			message[4] = parseInt(devise.duration*1000, 16); // convert to miliseconde
+			message[4] = devise.duration*1000; // convert to miliseconde
 			serialPort.write(message);
 			console.log(message);
 			
