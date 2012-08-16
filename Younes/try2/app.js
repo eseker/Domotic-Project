@@ -125,7 +125,8 @@ app.post('/send', function (req, res) {
 serialPort.on("data", function (data) {
 	console.log("here: " + data[3]);
 	var devise_id = parseInt(data[3]); // device id sent from the sensor
-	console.log("devise_id sent :" + (devise_id == 10));
+	console.log("devise_id sent :" + devise_id);
+  
   console.log("compare test :", (devise_id == 10));
 	var devise = _.find(data.devises, function (element) {
 			return element.id == devise_id;
