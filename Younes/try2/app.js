@@ -136,11 +136,11 @@ serialPort.on("data", function (data) {
 			
 			var rgb = toRGB(devise.color);
 			var message = []
-			message[0] = parseInt(device.light.toString(16));
+			message[0] = parseInt(devise.light.toString(16));
 			message[1] = rgb[0];
 			message[2] = rgb[1];
 			message[3] = rgb[2];
-			message[4] = devise.duration;
+			message[4] = parseInt(devise.duration*1000, 16); // convert to miliseconde
 			serialPort.write(message);
 			console.log(message);
 			
