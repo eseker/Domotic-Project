@@ -136,7 +136,7 @@ serialPort.on("data", function (data) {
 			
 			var rgb = toRGB(devise.color);
 			var message = []
-			message[0] = parseInt(devise.light.toString(16));
+			message[0] = devise.light;
 			message[1] = rgb[0];
 			message[2] = rgb[1];
 			message[3] = rgb[2];
