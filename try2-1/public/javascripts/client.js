@@ -172,7 +172,7 @@ $('li.color-thumb').live('click', function(){
       sensor_color.css("background-color", selected.color);  
     }else {
       	device_color.css("background-color", selected.color);
-	if(selected.color="#000000"){
+	if(selected.color=="#000000"){
     		interruptor_flip.val('off').slider("refresh");
     	}else {
     		interruptor_flip.val('on').slider("refresh");
