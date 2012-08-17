@@ -1,4 +1,3 @@
-
 var selected = -1; // selected sensors
 // UI
 var submit_button, room_setting, 
@@ -244,6 +243,7 @@ function init()
   
   interruptor_flip.bind( "change", function(event, ui) {
     selected.interruptor = interruptor_flip.val() == "on" ? true : false;
+     sendRequest();
   });
   
   timelighing.change(function() {
