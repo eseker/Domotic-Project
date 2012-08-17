@@ -1,4 +1,3 @@
-
 /**
  * Module dependencies.
  */
@@ -151,7 +150,8 @@ app.post('/send', function (req, res) {
 	
 	// send message only for lights
 	if (device.sensor == "false") {
-		var rgb = toRGB(device.color);
+		// when the interruptor is false send black of #000000
+		var rgb = (device.interruptor == "true") ? toRGB(device.color) : [0,0,0];
 		var message = []
 		message[0] = parseInt(device.id.toString(16));
 		message[1] = rgb[0];
