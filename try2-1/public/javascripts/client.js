@@ -32,7 +32,6 @@ function populate(selector, elements)
 
 
 
-
 function select_devise(id){
   var current = device_by_id(id);
  
@@ -204,6 +203,46 @@ $.mobile.loading( 'show', {
   
 });
 
+
+
+now.deviceConnected = function(data){
+    devices = data.devices;
+    rooms = data.rooms;
+	updateDeviseList()
+}
+
+
+function updateDeviseList()
+{
+   room_selector.empty();
+   lights_selector.empty();   
+   
+  room_selector.append($("<option value='-1' selected=true> -- choisir une chambre --</option>"));
+  lights_selector.append($("<option value='-1' selected=true> -- choisir une chambre --</option>"));	  
+  
+    $.each(rooms, function (i) {
+      
+      // select devices
+      var elements = device_by_room(i);
+	  // filter on connected device
+	  var connected_elements = _.filter(elements, function(element){ return element.connected; });
+	  
+	  if(connected_elements.length > 0){
+		room_selector.append($("<optgroup label='"+rooms[i]+"'/>"));		  
+      	populate(room_selector, connected_elements);
+		lights_selector.append($("<optgroup label='"+rooms[i]+"'/>"));
+        populate(lights_selector, connected_elements);    		
+	  }
+	  
+
+    });
+	
+	room_selector.selectmenu('refresh');
+	lights_selector.selectmenu('refresh');	
+	
+   
+}
+
 function init()
 {
   submit_button = $("#btnSendRequest");
@@ -224,17 +263,8 @@ function init()
   submit_button.button('disable');		
   submit_button.bind('click',sendRequest);
    
-   
-  $.each(rooms, function (i) {
-    room_selector.append($("<optgroup label='"+rooms[i]+"'/>"));
-    lights_selector.append($("<optgroup label='"+rooms[i]+"'/>"));
-    
-    // select devices
-    var elements = device_by_room(i);
-    populate(room_selector, elements);
-    populate(lights_selector, elements);    
-  });
-   
+  updateDeviseList();
+  
   
    // listening to room selector change
    room_selector.bind( "change", function(event, ui) {

@@ -2,16 +2,18 @@
  * Module dependencies.
  */
 
-var express = require('express'), http = require('http');
-var events = require('events');
-var util = require('util');
-var app = express();
-var _ = require('underscore');
+var express = require('express'), 
+	http = require('http'),
+	events = require('events'),
+	util = require('util'),
+	app = express(),
+	_ = require('underscore'),
+	nowjs = require("now");
 
 
 
 var SerialPort = require("serialport").SerialPort;
-var serialPort = new SerialPort("/dev/ttyO1", { baudrate : 57600 });
+var serialPort = new SerialPort("/dev/tty1", { baudrate : 57600 });
 
 var data = {
 	rooms : ["Salle à manger", "Salon", "Chambre"],
@@ -21,7 +23,8 @@ var data = {
 			name : "Lampe centrale",
 			room : 0,
 			interruptor : true,
-			color : "#000000"
+			color : "#000000",
+			connected: false
 		}, {
 			id : 10,
 			sensor : true,
@@ -32,14 +35,16 @@ var data = {
 			duration : 5,
 			color : "#000000",
 			light : 4,
-      running: false
+			running: false,
+			connected: false			
 		}, {
 			id : 21,
 			sensor : false,
 			name : "Lampe centrale",
 			room : 1,
 			interruptor : true,
-			color : "#000000"
+			color : "#000000",
+			connected: false			
 		}, {
 			id : 22,
 			sensor : true,
@@ -50,14 +55,16 @@ var data = {
 			duration : 10,
 			color : "#000000",
 			light : 5,
-      running: false
+			connected: false,		
+      	  	running: false
 		}, {
 			id : 23,
 			sensor : false,
 			name : "entrée",
 			room : 1,
 			interruptor : true,
-			color : "#000000"
+			color : "#000000",
+			connected: false			
 		}
 	]
 }
@@ -76,7 +83,6 @@ var interval = setInterval(function () {
 		var sensors = _.filter(data.devices, function (d) {
 				return d.sensor == true;
 			});
-      
 
 		_.each(sensors, function (sensor) {
 			sminutes = parseInt(sensor.startTime % 60, 10),
@@ -98,7 +104,7 @@ var interval = setInterval(function () {
 
   
 app.configure(function () {
-	app.set('port', process.env.PORT || 80);
+	app.set('port', process.env.PORT || 3003);
 	app.set('views', __dirname + '/views');
 	app.set('view engine', 'jade');
 	app.use(express.favicon());
@@ -158,42 +164,50 @@ app.post('/send', function (req, res) {
 		message[2] = rgb[1];
 		message[3] = rgb[2];
 		message[4]= 0;
-		serialPort.write(message);
+		//serialPort.write(message);
 		console.log(message);
 	}
+	
 	res.send("ok");
 	
 });
 
+
 serialPort.on("data", function (sdata) {
-	console.log("here: " + sdata[3]);
-	var device_id = parseInt(sdata[3]); // device id sent from the sensor
-	console.log("device_id sent :" + device_id);
-  
-  console.log("compare test :", (device_id == 10));
+
+	var device_id = parseInt(sdata[3]); 
 	var device = _.find(data.devices, function (element) {
 			return element.id == device_id;
 		});
-	
-	if (device) {
-    console.log(device);
-		if (device.sensor == true && device.running == true) {
-			// send here the message to the light
-			
-			var rgb = toRGB(device.color);
-			var message = []
-			message[0] = parseInt(device.light.toString(16));
-			message[1] = rgb[0];
-			message[2] = rgb[1];
-			message[3] = rgb[2];
-			message[4] = parseInt(device.duration.toString(16));//*1000; // convert to miliseconde
-			serialPort.write(message);
-			console.log(message);
-			
+
+	if (device) 
+	{
+		
+		// if the device is not connected update it status and notify the client
+		if(device.connected == false){
+			device.connected = true;
+			// send update to client
+			everyone.now.deviceConnected(data);		
+		}else {
+			// if the sensor is running
+			if (device.sensor == true && device.running == true) {
+				// send here the message to the light
+				// parse the color
+				var rgb = toRGB(device.color);
+				var message = []
+				message[0] = parseInt(device.light.toString(16));
+				message[1] = rgb[0];
+				message[2] = rgb[1];
+				message[3] = rgb[2];
+				message[4] = parseInt(device.duration.toString(16));
+				serialPort.write(message);
+			}
 		}
+		
 	} else {
 		console.log("device not found");
 	}
+			
 	
 });
 
@@ -203,6 +217,7 @@ function toRGB(h) {
 	return [parseInt(cut.substring(0, 2), 16), parseInt(cut.substring(2, 4), 16), parseInt(cut.substring(4, 6), 16)];
 }
 
-http.createServer(app).listen(app.get('port'), function () {
-	console.log("Express server listening on port " + app.get('port'));
-});
+
+var server = app.listen(app.get('port'));
+var everyone = require("now").initialize(server);
+
