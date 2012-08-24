@@ -1,5 +1,6 @@
 /**
  * Module dependencies.
+ * nowjs need phython : in beaglebone use opkg install python-compiler
  */
 
 var express = require('express'), 
